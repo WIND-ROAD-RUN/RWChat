@@ -11,7 +11,15 @@ set(CMAKE_AUTORCC ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Boost REQUIRED COMPONENTS system)
 
-add_executable(${PROJECT_NAME} main.cpp mainwindow.cpp mainwindow.h mainwindow.ui)
+list(APPEND CMAKE_AUTOUIC_SEARCH_PATHS ./ui)
+aux_source_directory(./src SRC_FILES)
+file(GLOB INCLUDE_FILES "include/*.h")
+file(GLOB UI_FILES "ui/*.ui")
+
+add_executable(${PROJECT_NAME} ${SRC_FILES} ${UI_FILES} ${INCLUDE_FILES})
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(${PROJECT_NAME} PRIVATE Boost::system)
+target_include_directories(${PROJECT_NAME} PRIVATE ./include)
 

@@ -1,3 +1,6 @@
+# CMakeList.txt: 顶层 CMake 项目文件，在此处执行全局配置
+# 并包含子项目。
+#
 cmake_minimum_required (VERSION 3.27)
 
 project (RWChat VERSION 0.1 LANGUAGES CXX)
@@ -24,6 +27,22 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
+# 启用 /PROFILE 选项
+#if (MSVC)
+ #   add_compile_options(/Zi)
+  #  add_link_options(/PROFILE /DEBUG)
+#endif()
+
 # 包含子项目。
-add_subdirectory (RWChatClient)
-add_subdirectory (RWChatSever)
+
+#windows
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    message(STATUS "Configuring for Windows")
+    add_subdirectory (RWChatClient)
+endif()
+
+#linux
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    message(STATUS "Configuring for Linux")
+    add_subdirectory (RWChatSever)
+endif()
